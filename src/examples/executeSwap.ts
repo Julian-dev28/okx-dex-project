@@ -17,12 +17,12 @@ async function executeSwap() {
     // When using another Chain, you need to change the fromTokenAddress and toTokenAddress to the correct addresses for that chain
     
     const swapResult = await client.dex.executeSwap({
-      chainId: '196',
+      chainId: '8453', // Base chain ID
       fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      toTokenAddress: '0x1e4a5963abfd975d8c9021ce480b42188849d41d',
-      amount: String(10 * 10 ** 16), // .001 ETH (in wei)
+      toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+      amount: String(10 * 10 ** 14), // .0001 ETH
       slippage: '0.5', // 0.1% slippage
-      userWalletAddress: process.env.EVM_WALLET_ADDRESS
+      userWalletAddress: process.env.EVM_WALLET_ADDRESS!
     });
 
     console.log('Swap executed successfully:');

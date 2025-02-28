@@ -20,7 +20,7 @@
   "author": "Julian Martinez",
   "license": "MIT",
   "dependencies": {
-    "@okx-dex/okx-dex-sdk": "^1.0.7",
+    "@okx-dex/okx-dex-sdk": "^1.0.10",
     "dotenv": "^16.4.7"
   },
   "devDependencies": {

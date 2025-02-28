@@ -6,9 +6,9 @@ import { client, TOKENS } from '../DexClient';
 async function getQuote() {
   try {
     const quote = await client.dex.getQuote({
-      chainId: '196', // Solana chain ID
+      chainId: '8453', // Base chain ID
       fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      toTokenAddress: '0x1e4a5963abfd975d8c9021ce480b42188849d41d',
+      toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
       amount: String(10 * 10 ** 16), // 0.1 ETH (in wei)
       slippage: '0.1'     // 0.1%
     });

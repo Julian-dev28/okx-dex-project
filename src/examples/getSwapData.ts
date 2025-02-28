@@ -6,20 +6,20 @@ import { client, TOKENS } from '../DexClient';
 async function getSwapData() {
   try {
     const swapData = await client.dex.getSwapData({
-      chainId: '196', // Solana chain ID
+      chainId: '8453', // Base chain ID
       fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      toTokenAddress: '0x1e4a5963abfd975d8c9021ce480b42188849d41d',
+      toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
       amount: String(10 * 10 ** 16), // 0.1 ETH (in wei)
-      slippage: '0.1',     // 0.1%
+      slippage: '0.5',     // 0.1%
       userWalletAddress: process.env.EVM_WALLET_ADDRESS
     });
 
-    console.log('Quote received:');
+    console.log('Swap Data received:');
     console.log(JSON.stringify(swapData, null, 2));
     
-    // console.log(`Expected output amount: ${swapData.data[0].toTokenAmount}`);
-    // console.log(`Price impact: ${swapData.data[0].priceImpactPercentage}%`);
-    
+    console.log(`Expected output amount: ${swapData.data[0].routerResult.toTokenAmount}`);
+    console.log(`Price impact: ${swapData.data[0].routerResult.priceImpactPercentage}%`);
+    console.log(`TX Data: ${swapData.data[0].tx?.data}`);
     return swapData;
   } catch (error) {
     if (error instanceof Error) {
