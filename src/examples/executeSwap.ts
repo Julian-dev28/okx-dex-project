@@ -1,4 +1,4 @@
-import { client, TOKENS } from '../index';
+import { client, TOKENS } from '../DexClient';
 
 /**
  * Example: Execute a swap from SOL to USDC

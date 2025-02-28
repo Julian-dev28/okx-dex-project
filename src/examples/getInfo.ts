@@ -1,4 +1,4 @@
-import { client } from '../index';
+import { client } from '../DexClient';
 
 /**
  * Example: Get supported chains, tokens, and liquidity sources
