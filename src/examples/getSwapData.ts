@@ -9,7 +9,7 @@ async function getSwapData() {
       chainId: '8453', // Base chain ID
       fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
       toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-      amount: String(10 * 10 ** 16), // 0.1 ETH (in wei)
+      amount: String(10 * 10 ** 14), // 0.0001 ETH (in wei)
       slippage: '0.5',     // 0.1%
       userWalletAddress: process.env.EVM_WALLET_ADDRESS
     });
