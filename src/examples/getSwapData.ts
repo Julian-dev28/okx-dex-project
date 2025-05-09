@@ -6,12 +6,12 @@ import { client } from '../DexClient';
 async function getSwapData() {
   try {
     const swapData = await client.dex.getSwapData({
-      chainId: '8453', // Base chain ID
-      fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-      amount: String(10 * 10 ** 18), // 0.0001 ETH (in wei)
+      chainId: '501', // Solana chain ID
+      fromTokenAddress: '11111111111111111111111111111111',
+      toTokenAddress: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      amount: '1000000000',
       slippage: '0.5',     // 0.1%
-      userWalletAddress: process.env.EVM_WALLET_ADDRESS
+      userWalletAddress: process.env.SOLANA_WALLET_ADDRESS
     });
 
     console.log('Swap Data received:');
