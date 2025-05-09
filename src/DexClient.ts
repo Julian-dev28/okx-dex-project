@@ -3,7 +3,7 @@ import 'dotenv/config';
 
 // Common Solana token addresses
 export const TOKENS = {
-  SOL: '11111111111111111111111111111111',   // Wrapped SOL
+  SOL: '11111111111111111111111111111111',   // Native SOL
   USDC: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
   USDT: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'
 };
@@ -27,6 +27,20 @@ const initClient = () => {
       },
       privateKey: process.env.EVM_PRIVATE_KEY!,
       walletAddress: process.env.EVM_WALLET_ADDRESS!
+    },
+    solana: {
+      connection: {
+        rpcUrl: process.env.SOLANA_RPC_URL!,
+      },
+      walletAddress: process.env.SOLANA_WALLET_ADDRESS!,
+      privateKey: process.env.SOLANA_PRIVATE_KEY!,
+    },
+    sui: {
+      connection: {
+        rpcUrl: process.env.SUI_RPC_URL!,
+      },
+      walletAddress: process.env.SUI_WALLET_ADDRESS!,
+      privateKey: process.env.SUI_PRIVATE_KEY!,
     }
   });
 };

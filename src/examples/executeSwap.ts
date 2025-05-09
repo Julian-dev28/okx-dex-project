@@ -1,55 +1,100 @@
-import { client, TOKENS } from '../DexClient';
+// src/examples/solana-swap.ts
+import { client } from '../DexClient';
+import 'dotenv/config';
 
-/**
- * Example: Execute a swap from SOL to USDC
- */
-async function executeSwap() {
-  try {
-    if (!process.env.EVM_PRIVATE_KEY) {
-      throw new Error('Missing EVM_PRIVATE_KEY in .env file');
+// Validate environment variables
+const requiredEnvVars = [
+    'OKX_API_KEY',
+    'OKX_SECRET_KEY',
+    'OKX_API_PASSPHRASE',
+    'OKX_PROJECT_ID',
+    'SOLANA_WALLET_ADDRESS',
+    'SOLANA_PRIVATE_KEY',
+    'SOLANA_RPC_URL'
+];
+
+for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+        throw new Error(`Missing required environment variable: ${envVar}`);
     }
-
-
-    // You can change this to any EVM chain
-    // For example, for base, use chainId: '8453'
-    // For example, for baseSepolia, use chainId: '84532'
-    // You can also use SUI, use chainId: '784'
-    // When using another Chain, you need to change the fromTokenAddress and toTokenAddress to the correct addresses for that chain
-    
-    const swapResult = await client.dex.executeSwap({
-      chainId: '8453', // Base chain ID
-      fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-      amount: String(10 * 10 ** 14), // .0001 ETH
-      slippage: '0.5', // 0.1% slippage
-      userWalletAddress: process.env.EVM_WALLET_ADDRESS!
-    });
-
-    console.log('Swap executed successfully:');
-    console.log(JSON.stringify(swapResult, null, 2));
-    
-    return swapResult;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error executing swap:', error.message);
-      // API errors include details in the message
-      if (error.message.includes('API Error:')) {
-        const match = error.message.match(/API Error: (.*)/);
-        if (match) console.error('API Error Details:', match[1]);
-      }
-    }
-    throw error;
-  }
 }
 
-// Run if this file is executed directly
+async function main() {
+    try {
+        const args = process.argv.slice(2);
+        if (args.length !== 3) {
+            console.log('Usage: ts-node src/examples/solana-swap.ts <amount> <fromTokenAddress> <toTokenAddress>');
+            console.log('\nExamples:');
+            console.log('  # Swap 0.1 SOL to USDC');
+            console.log('  ts-node src/examples/solana-swap.ts 0.1 11111111111111111111111111111111 EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
+            process.exit(1);
+        }
+
+        const [amount, fromTokenAddress, toTokenAddress] = args;
+        
+        // Get quote to fetch token information
+        console.log("Getting token information...");
+        const quote = await client.dex.getQuote({
+            chainId: '501',
+            fromTokenAddress,
+            toTokenAddress,
+            amount: '1000000', // Small amount for quote
+            slippage: '0.2'
+        });
+
+        const tokenInfo = {
+            fromToken: {
+                symbol: quote.data[0].fromToken.tokenSymbol,
+                decimals: parseInt(quote.data[0].fromToken.decimal),
+                price: quote.data[0].fromToken.tokenUnitPrice
+            },
+            toToken: {
+                symbol: quote.data[0].toToken.tokenSymbol,
+                decimals: parseInt(quote.data[0].toToken.decimal),
+                price: quote.data[0].toToken.tokenUnitPrice
+            }
+        };
+
+        // Convert amount to base units
+        const rawAmount = (parseFloat(amount) * Math.pow(10, tokenInfo.fromToken.decimals)).toString();
+
+        console.log("\nSwap Details:");
+        console.log("--------------------");
+        console.log(`From: ${tokenInfo.fromToken.symbol}`);
+        console.log(`To: ${tokenInfo.toToken.symbol}`);
+        console.log(`Amount: ${amount} ${tokenInfo.fromToken.symbol}`);
+        console.log(`Amount in base units: ${rawAmount}`);
+        console.log(`Approximate USD value: $${(parseFloat(amount) * parseFloat(tokenInfo.fromToken.price)).toFixed(2)}`);
+
+        // Execute the swap
+        console.log("\nExecuting swap...");
+        const result = await client.dex.executeSwap({
+            chainId: '501',
+            fromTokenAddress,
+            toTokenAddress,
+            amount: rawAmount,
+            slippage: '0.2',
+            userWalletAddress: process.env.SOLANA_WALLET_ADDRESS
+        });
+
+        console.log("\nSwap completed successfully!");
+        console.log("Transaction ID:", result.transactionId);
+        console.log("Explorer URL:", result.explorerUrl);
+        if (result.details) {
+            console.log("\nDetails:");
+            console.log(`Input: ${result.details.fromToken.amount} ${result.details.fromToken.symbol}`);
+            console.log(`Output: ${result.details.toToken.amount} ${result.details.toToken.symbol}`);
+            if (result.details.priceImpact) {
+                console.log(`Price Impact: ${result.details.priceImpact}%`);
+            }
+        }
+
+    } catch (error) {
+        console.error("\nError:", error instanceof Error ? error.message : "Unknown error");
+        process.exit(1);
+    }
+}
+
 if (require.main === module) {
-  executeSwap()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error('Error:', error);
-      process.exit(1);
-    });
+    main();
 }
-
-export { executeSwap };

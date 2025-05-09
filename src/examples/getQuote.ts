@@ -1,4 +1,4 @@
-import { client, TOKENS } from '../DexClient';
+import { client } from '../DexClient';
 
 /**
  * Example: Get a swap quote for SOL to USDC
@@ -6,10 +6,10 @@ import { client, TOKENS } from '../DexClient';
 async function getQuote() {
   try {
     const quote = await client.dex.getQuote({
-      chainId: '8453', // Base chain ID
-      fromTokenAddress: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      toTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-      amount: String(10 * 10 ** 16), // 0.1 ETH (in wei)
+      chainId: '501', 
+      fromTokenAddress: 'So11111111111111111111111111111111111111112',
+      toTokenAddress: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      amount: '1000000000', // 0.1 ETH (in wei)
       slippage: '0.1'     // 0.1%
     });
 
