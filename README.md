@@ -61,19 +61,19 @@ This project includes several example scripts demonstrating how to use the OKX D
 ### Get Quote (SOL → USDC)
 
 ```
-npm run dev -- src/examples/getQuote.ts
+npx ts-node src/examples/getQuote.ts      
 ```
 
 ### Execute Swap
 
 ```
-npm run dev -- src/examples/executeSwap.ts
+npx ts-node src/examples/executeSwap.ts .01 11111111111111111111111111111111 EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
 ```
 
 ### Get Chain, Token, and Liquidity Information
 
 ```
-npm run dev -- src/examples/getInfo.ts
+npx ts-node src/examples/getInfo.ts
 ```
 
 ## API Reference
@@ -81,14 +81,9 @@ npm run dev -- src/examples/getInfo.ts
 The project uses the following methods from the OKX DEX SDK:
 
 ```typescript
-// Get supported chains
-const chains = await client.dex.getSupportedChains();
 
 // Get Solana tokens
 const tokens = await client.dex.getTokens('501');
-
-// Get liquidity sources
-const liquidity = await client.dex.getLiquidity('501');
 
 // Get swap quote
 const quote = await client.dex.getQuote({...});
@@ -98,18 +93,6 @@ const swapData = await client.dex.getSwapData({...});
 
 // Execute swap
 const swapResult = await client.dex.executeSwap({...});
-```
-
-## Development
-
-Build the project:
-```
-npm run build
-```
-
-Run the compiled JavaScript:
-```
-npm start
 ```
 
 ## Common Solana Token Addresses
