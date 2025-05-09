@@ -7,20 +7,20 @@ async function getInfo() {
   try {
     // Get supported chains
     console.log('Getting supported chains...');
-    const chains = await client.dex.getSupportedChains('8453');
+    const chains = await client.dex.getSupportedChains('501');
     console.log('Supported chains:');
     console.log(JSON.stringify(chains, null, 2));
 
     // Get Solana tokens
     console.log('\nGetting Solana tokens...');
-    const tokens = await client.dex.getTokens('8453');
+    const tokens = await client.dex.getTokens('501');
     console.log(`Found ${tokens.data.length} tokens on BASE.`);
     console.log('First 5 tokens:');
     console.log(JSON.stringify(tokens.data.slice(0, 5), null, 2));
 
     // Get liquidity sources
     console.log('\nGetting liquidity sources...');
-    const liquidity = await client.dex.getLiquidity('8453');
+    const liquidity = await client.dex.getLiquidity('501');
     console.log('Liquidity sources:');
     console.log(JSON.stringify(liquidity, null, 2));
 
